@@ -14,6 +14,7 @@ public class DrawbridgeModule implements RobotModule {
 	private Talon motorTalon;
 	
 	//debug 
+	private boolean halfwayOpen = false;
 	private boolean currClosed = false;
 	private boolean currOpen = false;
 	//True if open
@@ -44,9 +45,14 @@ public class DrawbridgeModule implements RobotModule {
 	
 	public void Open(){
 		targetState = true;
+		halfwayOpen = false;
 	}
 	public void Close(){
 		targetState = false;
+		halfwayOpen = false;
+	}
+	public void Half(){
+		halfwayOpen = true;
 	}
 
 	public void updateTick(int mode) {
@@ -65,7 +71,15 @@ public class DrawbridgeModule implements RobotModule {
 			motorTalon.set(0);
 			return;
 		}
-		if(targetState){
+		if(halfwayOpen){
+			if(switchOpen.get())
+				motorTalon.set(0.3);
+			else if(!switchClosed.get()){
+				motorTalon.set(-0.3);
+			}else
+				motorTalon.set(0);
+		}
+		else if(targetState){
 			if(!switchOpen.get()){
 				motorTalon.set(-.3);
 			}else{
