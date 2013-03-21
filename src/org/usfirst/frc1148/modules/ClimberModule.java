@@ -8,7 +8,10 @@ public class ClimberModule implements RobotModule {
     private Talon arm;
     private Talon winch;
     private Talon boxLift;
-
+    private DrawbridgeModule drawbridge;
+    public ClimberModule(DrawbridgeModule drawbridge){
+        this.drawbridge = drawbridge;
+    }
     public void initModule() {
         arm = new Talon(6);
         winch = new Talon(7);
@@ -36,12 +39,14 @@ public class ClimberModule implements RobotModule {
     }
     
     public ClimberModule LiftBox(){
-        boxLift.set(0.2);
+         drawbridge.Half();
+        boxLift.set(0.6);
         return this;
     }
     
     public ClimberModule LowerBox(){
-        boxLift.set(-0.1);
+        boxLift.set(-0.4);
+        drawbridge.Half();
         return this;
     }
     

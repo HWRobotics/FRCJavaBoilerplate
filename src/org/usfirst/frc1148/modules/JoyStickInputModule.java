@@ -97,7 +97,6 @@ public class JoyStickInputModule implements RobotModule {
 
         if (secControl.getTrigger()) {
             climber.SetArmSpeed(secControl.getY());
-            drawbridge.Disable();
         } else {
             climber.SetArmSpeed(0);
         }
@@ -105,7 +104,6 @@ public class JoyStickInputModule implements RobotModule {
 
         if (thirdControl.getTrigger()) {
             climber.SetWinchSpeed(thirdControl.getY());
-            drawbridge.Disable();
         } else {
             climber.SetWinchSpeed(0);
         }
@@ -137,5 +135,18 @@ public class JoyStickInputModule implements RobotModule {
         } else {
             autoDrive.Disable();
         }
+        
+        if(drive.getRawButton(3)){
+            drawbridge.Half();
+        }
+        if(secControl.getRawButton(7)){
+            climber.LiftBox();
+        }else if(secControl.getRawButton(6)) {
+            climber.LowerBox();
+        }
+        else{
+            climber.StopBox();
+        }
+        
     }
 }
