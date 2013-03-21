@@ -60,12 +60,10 @@ public class AutoDriveModule implements RobotModule {
 				double diff = Math.abs(hdgDiff(angle, targetDegrees));
 				double speed;
 				if(diff > 1){
-					if(diff < 5)
-						speed = 0.05;
-					else if(diff < 10)
-						speed = 0.2;
-					else if(diff < 45)
-						speed = 0.3;
+					if(diff < 45){
+						speed = Math.abs(diff/45);
+						speed = speed*speed;
+					}
 					else if(diff < 100)
 						speed = 0.4;
 					else

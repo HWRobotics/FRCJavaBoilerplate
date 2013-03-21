@@ -12,6 +12,8 @@ public class AutonomousModule implements RobotModule {
 	Timer timer;
 	Timer secondTimer;
 	int wiggle = 0;
+	boolean autonomousEnabled = false;
+	
 	public AutonomousModule(RobotDriver drive, DrawbridgeModule box){
 		driver = drive;
 		drawbridge = box;
@@ -32,24 +34,19 @@ public class AutonomousModule implements RobotModule {
 	}
 
 	public void updateTick(int mode) {
-		/*
-		if(mode == 1){
-			return;
-			
+		
+		if(mode == 1 && autonomousEnabled){
 			MoveData moveData = driver.getMoveData();
 			drawbridge.Enable();
 			driver.NotRelative();
-			//ex: set angle to drive
-			//moveData.angle = 45;
-			//moveData.speed = 1;
-			if(state == 0){
-				
+			switch(state){
+			case 0:
 				timer.reset();
 				timer.start();
-				
 				state++;
 				System.out.println("Moving to state "+state);
-			}else if(state==1){
+				break;
+			case 1:
 				moveData.angle = 90;
 				moveData.speed = .5;
 				moveData.rotationSpeed = 0;
@@ -63,13 +60,15 @@ public class AutonomousModule implements RobotModule {
 					state++;
 					System.out.println("Moving to state "+state);
 				}
-			}else if(state == 2){
+				break;
+			case 2:
 				drawbridge.Open();
 				timer.reset();
 				timer.start();
 				state++;
 				System.out.println("Moving to state "+state);
-			}else if(state == 3){
+				break;
+			case 3:
 				moveData.speed = 0;
 				moveData.angle = 270;
 				if(timer.get() > 2000){
@@ -79,7 +78,8 @@ public class AutonomousModule implements RobotModule {
 					timer.reset();
 					timer.start();
 				}
-			}else if(state == 4){
+				break;
+			case 4:
 				moveData.angle = 270;
 				moveData.speed = 1;
 				if(timer.get()>1000){
@@ -88,17 +88,19 @@ public class AutonomousModule implements RobotModule {
 					state++;
 					System.out.println("Moving to state "+state);
 				}
-			}else if(state == 5){
+				break;
+			case 5:
 				moveData.angle = 0;
 				moveData.speed = 0;
 				//drawbridge.Close();
 				moveData.rotationSpeed = 0;
 				driver.Relative();
 				System.out.println("Moving to state "+state);
+				break;
+			default:
+				System.out.println("Autonomous finished.");
+				break;
 			}
-		    
-		}*/
+		}
 	}
-	
-
 }
