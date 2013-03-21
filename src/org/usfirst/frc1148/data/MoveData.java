@@ -5,14 +5,14 @@ package org.usfirst.frc1148.data;
  * Only 1 should exist at once.
  */
 public class MoveData {
-	public double rotationSpeed;
-	public double angle;
-	public double speed;
-	public MoveData(){
-	    angle = 0;
-	    speed = 0;
-		rotationSpeed = 0;
-	}
 
-	
+    public double rotationSpeed;
+    public double angle;
+    public double speed;
+
+    public MoveData() {
+        angle = 0;
+        speed = 0;
+        rotationSpeed = 0;
+    }
 }

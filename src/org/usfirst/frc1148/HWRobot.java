@@ -4,9 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
 package org.usfirst.frc1148;
-
 
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -30,55 +28,57 @@ import edu.wpi.first.wpilibj.Watchdog;
  * directory.
  */
 public class HWRobot extends IterativeRobot {
+
     private Hashtable modules;
-    
-    public HWRobot(){
-    	Watchdog.getInstance().feed();
+
+    public HWRobot() {
+        Watchdog.getInstance().feed();
         System.out.println("Constructing HWRobot...");
         modules = new Hashtable();
-        
+
         System.out.println("Constructing modules...");
-       // modules.put("motorTester", new MotorMoveTest(this));
+        // modules.put("motorTester", new MotorMoveTest(this));
         modules.put("climber", new ClimberModule());
         modules.put("robotDriver", new RobotDriver(this));
         modules.put("drawbridge", new DrawbridgeModule());
-        modules.put("autodrive", new AutoDriveModule((RobotDriver)modules.get("robotDriver")));
-        modules.put("joystick", new JoyStickInputModule(this, (AutoDriveModule)modules.get("autodrive"),(RobotDriver)modules.get("robotDriver"), (DrawbridgeModule)modules.get("drawbridge"), (ClimberModule)modules.get("climber")));
-        modules.put("autonomous", new AutonomousModule((RobotDriver)modules.get("robotDriver"), (DrawbridgeModule)modules.get("drawbridge")));
+        modules.put("autodrive", new AutoDriveModule((RobotDriver) modules.get("robotDriver")));
+        modules.put("joystick", new JoyStickInputModule(this, (AutoDriveModule) modules.get("autodrive"), (RobotDriver) modules.get("robotDriver"), (DrawbridgeModule) modules.get("drawbridge"), (ClimberModule) modules.get("climber")));
+        modules.put("autonomous", new AutonomousModule((RobotDriver) modules.get("robotDriver"), (DrawbridgeModule) modules.get("drawbridge")));
         System.out.println("HWRobot construction done...");
         Watchdog.getInstance().feed();
     }
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
-     */ 
+     */
     public void robotInit() {
-    	Watchdog.getInstance().feed();
+        Watchdog.getInstance().feed();
         System.out.println("Initializing HWRobot...");
-        
+
         Enumeration e = modules.elements();
         RobotModule value;
-        while(e.hasMoreElements()){
-        	value = (RobotModule) e.nextElement();
-        	value.initModule();
+        while (e.hasMoreElements()) {
+            value = (RobotModule) e.nextElement();
+            value.initModule();
         }
-        
+
         System.out.println("HWRobot initialization done...");
     }
 
     /**
      * Init the autonomous mode.
      */
-    public void autonomousInit(){
-    	Watchdog.getInstance().feed();
-    	Enumeration e = modules.elements();
+    public void autonomousInit() {
+        Watchdog.getInstance().feed();
+        Enumeration e = modules.elements();
         RobotModule value;
-        while(e.hasMoreElements()){
-        	value = (RobotModule) e.nextElement();
-        	value.activateModule();
+        while (e.hasMoreElements()) {
+            value = (RobotModule) e.nextElement();
+            value.activateModule();
         }
     }
-    
+
     /**
      * This function is called periodically during autonomous
      */
@@ -86,95 +86,94 @@ public class HWRobot extends IterativeRobot {
         Watchdog.getInstance().feed();
         Enumeration e = modules.elements();
         RobotModule value;
-        while(e.hasMoreElements()){
-        	value = (RobotModule) e.nextElement();
-        	value.updateTick(1);
+        while (e.hasMoreElements()) {
+            value = (RobotModule) e.nextElement();
+            value.updateTick(1);
         }
     }
-    
-    
-    public void disabledInit(){
-    	Watchdog.getInstance().feed();
-    	Enumeration e = modules.elements();
+
+    public void disabledInit() {
+        Watchdog.getInstance().feed();
+        Enumeration e = modules.elements();
         RobotModule value;
-        while(e.hasMoreElements()){
-        	value = (RobotModule) e.nextElement();
-        	value.deactivateModule();
+        while (e.hasMoreElements()) {
+            value = (RobotModule) e.nextElement();
+            value.deactivateModule();
         }
     }
-    public void disabledPeriodic(){
-    	Watchdog.getInstance().feed();
-    	/*
-    	Enumeration e = modules.elements();
-        RobotModule value;
-        while(e.hasMoreElements()){
-        	value = (RobotModule) e.nextElement();
-        	value.deactivateModule();
-        }*/
+
+    public void disabledPeriodic() {
+        Watchdog.getInstance().feed();
+        /*
+         Enumeration e = modules.elements();
+         RobotModule value;
+         while(e.hasMoreElements()){
+         value = (RobotModule) e.nextElement();
+         value.deactivateModule();
+         }*/
     }
-    
-    public void teleopInit()
-    {
-    	Watchdog.getInstance().feed();
-    	Enumeration e = modules.elements();
+
+    public void teleopInit() {
+        Watchdog.getInstance().feed();
+        Enumeration e = modules.elements();
         RobotModule value;
-        while(e.hasMoreElements()){
-        	value = (RobotModule) e.nextElement();
-        	value.activateModule();
+        while (e.hasMoreElements()) {
+            value = (RobotModule) e.nextElement();
+            value.activateModule();
         }
     }
+
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
         Watchdog.getInstance().feed();
-        
+
         Enumeration e = modules.elements();
         RobotModule value;
-        while(e.hasMoreElements()){
-        	value = (RobotModule) e.nextElement();
-        	value.updateTick(2);
-        	Watchdog.getInstance().feed();
+        while (e.hasMoreElements()) {
+            value = (RobotModule) e.nextElement();
+            value.updateTick(2);
+            Watchdog.getInstance().feed();
         }
         Watchdog.getInstance().feed();
     }
-    
-    public void disabledTeleop(){
-    	Watchdog.getInstance().feed();
-    	/*
-    	Enumeration e = modules.elements();
-        RobotModule value;
-        while(e.hasMoreElements()){
-        	value = (RobotModule) e.nextElement();
-        	value.deactivateModule();
-        }*/
-    	Watchdog.getInstance().feed();
+
+    public void disabledTeleop() {
+        Watchdog.getInstance().feed();
+        /*
+         Enumeration e = modules.elements();
+         RobotModule value;
+         while(e.hasMoreElements()){
+         value = (RobotModule) e.nextElement();
+         value.deactivateModule();
+         }*/
+        Watchdog.getInstance().feed();
     }
-    
+
     /**
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
         Watchdog.getInstance().feed();
-        
+
         Enumeration e = modules.elements();
         RobotModule value;
-        while(e.hasMoreElements()){
-        	value = (RobotModule) e.nextElement();
-        	value.updateTick(3);
-        	Watchdog.getInstance().feed();
+        while (e.hasMoreElements()) {
+            value = (RobotModule) e.nextElement();
+            value.updateTick(3);
+            Watchdog.getInstance().feed();
         }
     }
-    
-    public void disabledTest(){
-    	Watchdog.getInstance().feed();
-    	/*
-    	Enumeration e = modules.elements();
-        RobotModule value;
-        while(e.hasMoreElements()){
-        	value = (RobotModule) e.nextElement();
-        	value.deactivateModule();
-        }*/
+
+    public void disabledTest() {
+        Watchdog.getInstance().feed();
+        /*
+         Enumeration e = modules.elements();
+         RobotModule value;
+         while(e.hasMoreElements()){
+         value = (RobotModule) e.nextElement();
+         value.deactivateModule();
+         }*/
     }
-    
 }
