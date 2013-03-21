@@ -107,13 +107,6 @@ public class JoyStickInputModule implements RobotModule
 		}else{
 			climber.SetWinchSpeed(0);
 		}
-		if(thirdControl.getRawButton(4)){
-			climber.SetFirstWinch();
-		}
-		if(thirdControl.getRawButton(5))
-		{
-			climber.SetSecondWinch();
-		}
 		
 		if(drive.getTrigger()){
 			driver.TemporaryCamRel();
@@ -123,23 +116,11 @@ public class JoyStickInputModule implements RobotModule
 		}if(drive.getRawButton(10)){
 			drawbridge.Disable();
 		}
-		
-		
-		/*
-		if(secControl.getRawButton(2)){
-			drawbridge.Open();
-		}else if(secControl.getRawButton(3)){
-			drawbridge.Close();
-		}*/
-		
 		if(drive.getRawButton(12)){
 			drawbridge.Disable();
 		}if(drive.getRawButton(11)){
 			drawbridge.Enable();
-		}
-		
-		
-		
+                }
 		data.speed = Math.max(Math.abs(drive.getX()), Math.abs(drive.getY()));
 		data.angle = drive.getDirectionDegrees();
 		data.rotationSpeed = rotSpeed;		
