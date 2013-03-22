@@ -90,7 +90,7 @@ public class DrawbridgeModule implements RobotModule {
             }
         } else {
             if (switchClosed.get()) {
-                motorTalon.set(.3);
+                motorTalon.set(.2);
             } else {
                 motorTalon.set(0);
             }
