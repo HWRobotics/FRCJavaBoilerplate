@@ -13,11 +13,13 @@ public class AutonomousModule implements RobotModule {
     Timer timer;
     Timer secondTimer;
     int wiggle = 0;
-    boolean autonomousEnabled = false;
+    boolean autonomousEnabled = true;
+    AutoDriveModule autoDrive;
 
-    public AutonomousModule(RobotDriver drive, DrawbridgeModule box) {
+    public AutonomousModule(RobotDriver drive, DrawbridgeModule box, AutoDriveModule autoDrive) {
         driver = drive;
         drawbridge = box;
+        this.autoDrive = autoDrive;
     }
 
     public void initModule() {
@@ -51,15 +53,16 @@ public class AutonomousModule implements RobotModule {
                 case 1:
                     moveData.angle = 90;
                     moveData.speed = .5;
-                    moveData.rotationSpeed = 0;
+                    autoDrive.OrientTo(360-45);
                     drawbridge.Close();
                     if (timer.get() > 5000) {
                         timer.stop();
                         timer.reset();
                         moveData.angle = 270;
                         moveData.speed = 0;
-                        moveData.rotationSpeed = 0;
-                        state++;
+                        //stop auto-orienting incase door is damaged
+                        autoDrive.Disable();
+                        state++; 
                         System.out.println("Moving to state " + state);
                     }
                     break;
@@ -94,9 +97,10 @@ public class AutonomousModule implements RobotModule {
                 case 5:
                     moveData.angle = 0;
                     moveData.speed = 0;
-                    //drawbridge.Close();
-                    moveData.rotationSpeed = 0;
+                    drawbridge.Close();
+                    autoDrive.Disable();
                     driver.Relative();
+                    state++;
                     System.out.println("Moving to state " + state);
                     break;
                 default:
