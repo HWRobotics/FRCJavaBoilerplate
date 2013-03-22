@@ -1,9 +1,8 @@
 package org.usfirst.frc1148.modules;
 
+import edu.wpi.first.wpilibj.Timer;
 import org.usfirst.frc1148.data.MoveData;
 import org.usfirst.frc1148.interfaces.RobotModule;
-
-import edu.wpi.first.wpilibj.Timer;
 
 public class AutonomousModule implements RobotModule {
 
@@ -55,7 +54,7 @@ public class AutonomousModule implements RobotModule {
                     moveData.speed = .5;
                     autoDrive.OrientTo(360-45);
                     drawbridge.Close();
-                    if (timer.get() > 5000) {
+                    if (timer.get() > 5) {
                         timer.stop();
                         timer.reset();
                         moveData.angle = 270;
@@ -76,7 +75,7 @@ public class AutonomousModule implements RobotModule {
                 case 3:
                     moveData.speed = 0;
                     moveData.angle = 270;
-                    if (timer.get() > 2000) {
+                    if (timer.get() > 2) {
                         state++;
                         System.out.println("Moving to state " + state);
                         timer.stop();
@@ -87,7 +86,7 @@ public class AutonomousModule implements RobotModule {
                 case 4:
                     moveData.angle = 270;
                     moveData.speed = 1;
-                    if (timer.get() > 1000) {
+                    if (timer.get() > 1) {
                         timer.stop();
                         timer.reset();
                         state++;
