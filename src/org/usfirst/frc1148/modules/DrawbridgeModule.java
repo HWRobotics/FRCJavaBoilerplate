@@ -4,8 +4,8 @@
 package org.usfirst.frc1148.modules;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Talon;
 import org.usfirst.frc1148.interfaces.RobotModule;
+import org.usfirst.frc1148.systems.Talon;
 
 public class DrawbridgeModule implements RobotModule {
 

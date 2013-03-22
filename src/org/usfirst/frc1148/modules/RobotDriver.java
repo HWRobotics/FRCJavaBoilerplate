@@ -1,11 +1,10 @@
 package org.usfirst.frc1148.modules;
 
 import edu.wpi.first.wpilibj.Gyro;
-import edu.wpi.first.wpilibj.Talon;
 import org.usfirst.frc1148.HWRobot;
 import org.usfirst.frc1148.data.MoveData;
 import org.usfirst.frc1148.interfaces.RobotModule;
-import org.usfirst.frc1148.systems.TalonReversable;
+import org.usfirst.frc1148.systems.Talon;
 
 public class RobotDriver implements RobotModule {
 
@@ -37,11 +36,11 @@ public class RobotDriver implements RobotModule {
     public void initModule() {
         System.out.println("Initialzing robot driver module!");
         frontLeft = new Talon(2);
-        frontRight = new TalonReversable(4)
+        frontRight = new Talon(4)
                 .Reverse();
         robotGyro = new Gyro(2);
         backLeft = new Talon(1);
-        backRight = new TalonReversable(3)
+        backRight = new Talon(3)
                 .Reverse();
 
         System.out.println("Robot driver module initialized.");
