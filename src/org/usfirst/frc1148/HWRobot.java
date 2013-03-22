@@ -44,7 +44,7 @@ public class HWRobot extends IterativeRobot {
         modules.put("climber", new ClimberModule((DrawbridgeModule)modules.get("drawbridge")));
         modules.put("autodrive", new AutoDriveModule((RobotDriver) modules.get("robotDriver")));
         modules.put("joystick", new JoyStickInputModule(this, (AutoDriveModule) modules.get("autodrive"), (RobotDriver) modules.get("robotDriver"), (DrawbridgeModule) modules.get("drawbridge"), (ClimberModule) modules.get("climber")));
-        modules.put("autonomous", new AutonomousModule((RobotDriver) modules.get("robotDriver"), (DrawbridgeModule) modules.get("drawbridge")));
+        modules.put("autonomous", new AutonomousModule((RobotDriver) modules.get("robotDriver"), (DrawbridgeModule) modules.get("drawbridge"), (AutoDriveModule)modules.get("autodrive")));
         System.out.println("HWRobot construction done...");
         Watchdog.getInstance().feed();
     }

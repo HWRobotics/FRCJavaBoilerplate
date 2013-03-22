@@ -54,12 +54,12 @@ public class JoyStickInputModule implements RobotModule {
         if (mode != 2) {
             return;
         }
-        rotSpeed = drive.getZ();
+        rotSpeed = drive.getZ()/1.5; 
         if (drive.getRawButton(2)) {
             rotSpeed = 0;
         }
         //exponential
-        rotSpeed = rotSpeed * Math.abs(rotSpeed) * Math.abs(rotSpeed);
+        rotSpeed = rotSpeed * Math.abs(rotSpeed);
         driveY = drive.getY() * Math.abs(drive.getY());
         driveX = drive.getX() * Math.abs(drive.getX());
         //System.out.println("Z: "+rotSpeed+" Y: "+driveY+" X: "+driveX);
