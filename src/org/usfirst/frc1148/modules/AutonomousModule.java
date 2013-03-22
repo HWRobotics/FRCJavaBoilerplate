@@ -38,44 +38,49 @@ public class AutonomousModule implements RobotModule {
 
     public void updateTick(int mode) {
 
-        if (mode == 1 && autonomousEnabled) {
+        if (mode == 1 && autonomousEnabled) { //This should be exactly 15 seconds total.
             MoveData moveData = driver.getMoveData();
             drawbridge.Enable();
-            driver.NotRelative();
+            //driver.NotRelative();
             switch (state) {
-                case 0:
+                case 0: //Startup 0 seconds
                     timer.reset();
                     timer.start();
                     state++;
                     System.out.println("Moving to state " + state);
                     break;
-                case 1:
+                case 1: //Move right 3 seconds
                     moveData.angle = 90;
-                    moveData.speed = .5;
-                    autoDrive.OrientTo(360-45);
+                    moveData.speed = .8;
+                    autoDrive.OrientTo(0);
                     drawbridge.Close();
-                    if (timer.get() > 5) {
+                    if (timer.get() > 3) {
                         timer.stop();
                         timer.reset();
-                        moveData.angle = 270;
-                        moveData.speed = 0;
-                        //stop auto-orienting incase door is damaged
-                        autoDrive.Disable();
-                        state++; 
+                        timer.start();
+                        state++;
                         System.out.println("Moving to state " + state);
                     }
                     break;
-                case 2:
-                    drawbridge.Open();
-                    timer.reset();
-                    timer.start();
-                    state++;
-                    System.out.println("Moving to state " + state);
+                case 2: //Move forward 3 seconds
+                    //drawbridge.Open();
+                    moveData.angle = 0;
+                    moveData.speed = 0.8;
+                    autoDrive.OrientTo(0);
+                    
+                    if(timer.get()>3){
+                        timer.stop();
+                        timer.reset();
+                        timer.start();
+                        state++;
+                        System.out.println("Moving to state " + state);
+                    }
                     break;
-                case 3:
+                case 3: //angle correctly 1 second
                     moveData.speed = 0;
-                    moveData.angle = 270;
-                    if (timer.get() > 2) {
+                    moveData.angle = 90;
+                    autoDrive.OrientTo(360-45);
+                    if (timer.get() > 1) {
                         state++;
                         System.out.println("Moving to state " + state);
                         timer.stop();
@@ -83,26 +88,42 @@ public class AutonomousModule implements RobotModule {
                         timer.start();
                     }
                     break;
-                case 4:
-                    moveData.angle = 270;
-                    moveData.speed = 1;
-                    if (timer.get() > 1) {
+                case 4: // move toward goal 3 sec
+                    moveData.angle = 45;
+                    moveData.speed = 0.5;
+                    if (timer.get() > 3) {
                         timer.stop();
                         timer.reset();
+                        timer.start();
                         state++;
                         System.out.println("Moving to state " + state);
                     }
                     break;
-                case 5:
+                case 5: //dump 3 sec
                     moveData.angle = 0;
                     moveData.speed = 0;
-                    drawbridge.Close();
-                    autoDrive.Disable();
-                    driver.Relative();
-                    state++;
-                    System.out.println("Moving to state " + state);
+                    //drawbridge.Open();
+                    if(timer.get() > 3){
+                        timer.stop();
+                        timer.reset();
+                        timer.start();
+                        state++;
+                        System.out.println("Moving to state " + state);
+                    }
                     break;
+                case 6: // move away 2 sec --> autoorient 0 stop
+                    moveData.angle = 360-45;
+                    moveData.speed = 1;
+                    drawbridge.Close();
+                    autoDrive.OrientTo(360-45);
+                    if(timer.get() > 2){
+                        moveData.speed = 0;
+                        autoDrive.OrientTo(0);
+                        moveData.angle = 0;
+                        state++;
+                    }
                 default:
+                    driver.Relative();
                     System.out.println("Autonomous finished.");
                     break;
             }
