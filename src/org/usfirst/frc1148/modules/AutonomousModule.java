@@ -50,7 +50,7 @@ public class AutonomousModule implements RobotModule {
                 case 1://move right 2.5 seconds
                     moveData.angle = 90;
                     moveData.speed = 0.5;
-                    autoDrive.OrientTo(180);
+                    autoDrive.OrientTo(0);
                     if (timer.get() > 2.5) {
                         timer.stop();
                         timer.reset();
@@ -134,7 +134,7 @@ public class AutonomousModule implements RobotModule {
                         timer.start();
                         state++;
                     }*/
-                    break;
+                    //break;
                 default:
                     autoDrive.Disable();
                     moveData.speed = 0;
