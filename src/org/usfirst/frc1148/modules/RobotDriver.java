@@ -114,11 +114,11 @@ public class RobotDriver implements RobotModule {
          double backLefts = frontRights;
          double backRights = frontLefts;
          */
-        double frontLefts = speed * Math.sin(moveAngle + (Math.PI / 4)) + rotSpeed;
-        double frontRights = (speed * Math.cos(moveAngle + (Math.PI / 4)) - rotSpeed);
-        double backLefts = speed * Math.cos(moveAngle + (Math.PI / 4)) + rotSpeed;
-        double backRights = (speed * Math.sin(moveAngle + (Math.PI / 4)) - rotSpeed);
-
+        double frontLefts = speed *4/3* Math.sin(moveAngle + (Math.PI / 4)) + rotSpeed;
+        double frontRights = (speed*4/3 * Math.cos(moveAngle + (Math.PI / 4)) - rotSpeed);
+        double backLefts = speed *4/3* Math.cos(moveAngle + (Math.PI / 4)) + rotSpeed;
+        double backRights = (speed *4/3* Math.sin(moveAngle + (Math.PI / 4)) - rotSpeed);
+        
         double[] values = new double[]{frontLefts, frontRights, backLefts, backRights};
         double max = Math.abs(values[0]);
         for (int i = 1; i < 4; i++) {
@@ -131,6 +131,9 @@ public class RobotDriver implements RobotModule {
             frontRights /= max;
             backLefts /= max;
             backRights /= max;
+        }else if(max < speed){
+            
+            
         }
         //*/
 
@@ -145,7 +148,8 @@ public class RobotDriver implements RobotModule {
             backLeft.set(backLefts);
             backRight.set(backRights);
         } else {
-            //System.out.println("FL: "+frontLefts+" FR: "+frontRights+" BL: "+backLefts+" BR: "+backRights);
+            System.out.println("FL: "+frontLefts+" FR: "+frontRights+" BL: "+backLefts+" BR: "+backRights);
+            System.out.println("IS: "+moveData.speed+" ANG: "+moveData.angle + " ROT: "+moveData.rotationSpeed);
         }
         temporaryRelative = false;
     }
