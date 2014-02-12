@@ -1,61 +1,79 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
+/*
+ * ===========
+ * Robot Code File
+ * Team 1148 Framework
+ * ===========
+ * Author: Christian Stewart
+ * Date: 2/11/2014
+ */
+
 package org.usfirst.frc1148;
 
+//Core JAVA stuff
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Watchdog;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+//Robot modules
 import org.usfirst.frc1148.interfaces.RobotModule;
 import org.usfirst.frc1148.modules.AutoDriveModule;
 import org.usfirst.frc1148.modules.AutonomousModule;
-import org.usfirst.frc1148.modules.ClimberModule;
-import org.usfirst.frc1148.modules.DrawbridgeModule;
 import org.usfirst.frc1148.modules.JoyStickInputModule;
 import org.usfirst.frc1148.modules.RobotDriver;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Watchdog;
-
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
- */
-public class HWRobot extends IterativeRobot {
-
+public class Robot extends IterativeRobot {
+    
+    //Stores your robot code modules.
     private Hashtable modules;
 
-    public HWRobot() {
+    public Robot() {
         Watchdog.getInstance().feed();
-        System.out.println("Constructing HWRobot...");
+        System.out.println("Constructing Robot...");
         modules = new Hashtable();
 
+        /*
+         * Here you need to register all of your code modules.
+         * A code module is essentially a "feature" of the robot.
+         * It is passed an instance of this so that it can get
+         * references to other modules.
+         */
         System.out.println("Constructing modules...");
-        // modules.put("motorTester", new MotorMoveTest(this));
-        
         modules.put("robotDriver", new RobotDriver(this));
-        modules.put("drawbridge", new DrawbridgeModule());
-        modules.put("climber", new ClimberModule((DrawbridgeModule)modules.get("drawbridge")));
-        modules.put("autodrive", new AutoDriveModule((RobotDriver) modules.get("robotDriver")));
-        modules.put("joystick", new JoyStickInputModule(this, (AutoDriveModule) modules.get("autodrive"), (RobotDriver) modules.get("robotDriver"), (DrawbridgeModule) modules.get("drawbridge"), (ClimberModule) modules.get("climber")));
-        modules.put("autonomous", new AutonomousModule((RobotDriver) modules.get("robotDriver"), (DrawbridgeModule) modules.get("drawbridge"), (AutoDriveModule)modules.get("autodrive")));
-        System.out.println("HWRobot construction done...");
+        modules.put("autodrive", new AutoDriveModule(this));
+        modules.put("joystick", new JoyStickInputModule(this));
+        modules.put("autonomous", new AutonomousModule(this));
+        
+        System.out.println("Robot construction done...");
+        
         Watchdog.getInstance().feed();
     }
-
+    
+    /*
+     * ======== ROBOT FRAMEWORK ===========
+     * These are accessable within your robot modules.
+     * Use them to get references to other modules etc.
+     * ====================================
+     */
+    
+    public RobotModule GetModuleByName(String name)
+    {
+        return (RobotModule)modules.get(name);
+    }
+    
+    /*
+     * ========= FRC Callbacks ============
+     * It is not recommended to edit below here.
+     * You should instead create a robot module and register it.
+     * ====================================
+     */
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
         Watchdog.getInstance().feed();
-        System.out.println("Initializing HWRobot...");
+        System.out.println("Initializing Robot...");
 
         Enumeration e = modules.elements();
         RobotModule value;
@@ -63,8 +81,7 @@ public class HWRobot extends IterativeRobot {
             value = (RobotModule) e.nextElement();
             value.initModule();
         }
-
-        System.out.println("HWRobot initialization done...");
+        System.out.println("Robot initialization done...");
     }
 
     /**
@@ -105,13 +122,6 @@ public class HWRobot extends IterativeRobot {
 
     public void disabledPeriodic() {
         Watchdog.getInstance().feed();
-        /*
-         Enumeration e = modules.elements();
-         RobotModule value;
-         while(e.hasMoreElements()){
-         value = (RobotModule) e.nextElement();
-         value.deactivateModule();
-         }*/
     }
 
     public void teleopInit() {
@@ -142,14 +152,6 @@ public class HWRobot extends IterativeRobot {
 
     public void disabledTeleop() {
         Watchdog.getInstance().feed();
-        /*
-         Enumeration e = modules.elements();
-         RobotModule value;
-         while(e.hasMoreElements()){
-         value = (RobotModule) e.nextElement();
-         value.deactivateModule();
-         }*/
-        Watchdog.getInstance().feed();
     }
 
     /**
@@ -169,12 +171,5 @@ public class HWRobot extends IterativeRobot {
 
     public void disabledTest() {
         Watchdog.getInstance().feed();
-        /*
-         Enumeration e = modules.elements();
-         RobotModule value;
-         while(e.hasMoreElements()){
-         value = (RobotModule) e.nextElement();
-         value.deactivateModule();
-         }*/
     }
 }

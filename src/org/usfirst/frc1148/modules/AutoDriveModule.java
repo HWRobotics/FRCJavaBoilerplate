@@ -1,34 +1,44 @@
 package org.usfirst.frc1148.modules;
 
+import org.usfirst.frc1148.Robot;
 import org.usfirst.frc1148.data.MoveData;
 import org.usfirst.frc1148.interfaces.RobotModule;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-
-public class AutoDriveModule implements RobotModule {
-
-    DigitalInput rangefinderMid;
-    DigitalInput rangefinderClose;
+/*
+ * ===== Team 1148 Boilerplate =====
+ * This code is a freebie.
+ * It essentially auto-drives - drive-by-wire.
+ * It allows the operator to specify an angle to
+ * orient to, and then informs the robotDriver to turn
+ * to that angle.
+ */
+public class AutoDriveModule implements RobotModule
+{
     int targetDegrees = 0;
     boolean autoOrient = false;
-    boolean approachWall = false;
     RobotDriver driver;
+    Robot robot;
 
     public AutoDriveModule(RobotDriver driver) {
         this.driver = driver;
     }
 
-    public void initModule() {
-        rangefinderMid = new DigitalInput(2);
-        rangefinderClose = new DigitalInput(3);
+    public AutoDriveModule(Robot robot) {
+        this.robot = robot;
+    }
+
+    public void initModule() 
+    {
+        this.driver = (RobotDriver)this.robot.GetModuleByName("robotDriver");
     }
 
     public void activateModule() {
-        Disable();
-
+        Disable(); //AKA "Reset"
     }
 
-    public void deactivateModule() {
+    public void deactivateModule()
+    {
+        Disable();
     }
 
     public AutoDriveModule Disable() {
@@ -36,21 +46,13 @@ public class AutoDriveModule implements RobotModule {
         if (autoOrient) {
             data.rotationSpeed = 0;
         }
-        if (approachWall) {
-            data.speed = 0;
-        }
-        autoOrient = approachWall = false;
+        autoOrient = false;
         return this;
     }
 
     public AutoDriveModule OrientTo(int degrees) {
         autoOrient = true;
         targetDegrees = degrees;
-        return this;
-    }
-
-    public AutoDriveModule ApproachWall() {
-        approachWall = true;
         return this;
     }
 
@@ -78,11 +80,6 @@ public class AutoDriveModule implements RobotModule {
                 data.rotationSpeed = 0;
             }
         }
-        //approachWall = true; //VERY F**ING IMPORTANT TO CHANGE THIS
-        //if(approachWall){
-        //System.out.println("APPROACH WALL: MID: "+rangefinderMid.get()+" CLOSE: "+rangefinderClose.get());
-        //}
-
     }
 
     double hdgDiff(double h1, double h2) { // angle between two headings

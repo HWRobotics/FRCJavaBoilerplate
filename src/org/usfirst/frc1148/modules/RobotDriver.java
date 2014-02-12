@@ -1,14 +1,14 @@
 package org.usfirst.frc1148.modules;
 
 import edu.wpi.first.wpilibj.Gyro;
-import org.usfirst.frc1148.HWRobot;
+import edu.wpi.first.wpilibj.Talon;
+import org.usfirst.frc1148.Robot;
 import org.usfirst.frc1148.data.MoveData;
 import org.usfirst.frc1148.interfaces.RobotModule;
-import org.usfirst.frc1148.systems.Talon;
 
 public class RobotDriver implements RobotModule {
 
-    HWRobot robot;
+    Robot robot;
     Talon frontLeft;
     Talon backLeft;
     Talon frontRight;
@@ -16,12 +16,10 @@ public class RobotDriver implements RobotModule {
     public Gyro robotGyro;
     boolean relativeDrive = true;
     int angleOffset = 0;
-    boolean temporaryRelative = false;
     MoveData moveData;
     boolean enableMotors = true;
 
-    public RobotDriver(HWRobot robot) {
-        //robotGyro = new Gyro(1);
+    public RobotDriver(Robot robot) {
         this.robot = robot;
         moveData = new MoveData();
     }
@@ -36,13 +34,10 @@ public class RobotDriver implements RobotModule {
     public void initModule() {
         System.out.println("Initialzing robot driver module!");
         frontLeft = new Talon(2);
-        frontRight = new Talon(4)
-                .Reverse();
+        frontRight = new Talon(4);
         robotGyro = new Gyro(2);
         backLeft = new Talon(1);
-        backRight = new Talon(3)
-                .Reverse();
-
+        backRight = new Talon(3);
         System.out.println("Robot driver module initialized.");
     }
 
@@ -85,13 +80,10 @@ public class RobotDriver implements RobotModule {
         double speed = moveData.speed;
         double moveAngle = moveData.angle;
 
-        if (relativeDrive && !temporaryRelative) {
+        if (relativeDrive) {
             moveAngle -= robotGyro.getAngle() + angleOffset;
         }
-        if (temporaryRelative) {
-            moveAngle += 90;
-        }
-        //robotGyro.setSensitivity(voltsPerDegreePerSecond)
+        
         while (moveAngle < 0 || moveAngle > 360) {
             if (moveAngle < 0) {
                 moveAngle += 360;
@@ -99,21 +91,10 @@ public class RobotDriver implements RobotModule {
                 moveAngle -= 360;
             }
         }
-
-        //System.out.println("Speed: "+speed+" Angle: "+moveAngle);
-        //convert to radians
-
-
+        
         moveAngle = moveAngle / 180 * Math.PI;
         double rotSpeed = moveData.rotationSpeed;
 
-
-        /*
-         double frontLefts = speed*Math.sin(moveAngle+(Math.PI/4))+rotSpeed;
-         double frontRights = speed*Math.sin(moveAngle+(Math.PI/4))-rotSpeed;
-         double backLefts = frontRights;
-         double backRights = frontLefts;
-         */
         double frontLefts = speed *4/3* Math.sin(moveAngle + (Math.PI / 4)) + rotSpeed;
         double frontRights = (speed*4/3 * Math.cos(moveAngle + (Math.PI / 4)) - rotSpeed);
         double backLefts = speed *4/3* Math.cos(moveAngle + (Math.PI / 4)) + rotSpeed;
@@ -131,37 +112,22 @@ public class RobotDriver implements RobotModule {
             frontRights /= max;
             backLefts /= max;
             backRights /= max;
-        }else if(max < speed){
-            
-            
         }
-        //*/
-
-        /* V2
-		
-         */
 
         //apply motor movement
         if (enableMotors) {
             frontLeft.set(frontLefts);
-            frontRight.set(frontRights);
+            frontRight.set(-1*frontRights);
             backLeft.set(backLefts);
-            backRight.set(backRights);
+            backRight.set(-1*backRights);
         } else {
             System.out.println("FL: "+frontLefts+" FR: "+frontRights+" BL: "+backLefts+" BR: "+backRights);
             System.out.println("IS: "+moveData.speed+" ANG: "+moveData.angle + " ROT: "+moveData.rotationSpeed);
         }
-        temporaryRelative = false;
     }
 
     public void updateTick(int mode) {
         processMovementVector();
-
-    }
-
-    public RobotDriver TemporaryCamRel() {
-        temporaryRelative = true;
-        return this;
 
     }
 
